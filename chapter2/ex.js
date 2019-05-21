@@ -50,3 +50,28 @@ array.forEach(e => {
         console.log("FizzBuzz");
     }
 })
+
+
+// CHESSBOARD
+let size = 8;
+let board = new Array(size).fill('').map((e, r) => new Array(size).fill('').map((c, i) => {
+    if (r % 2 === 0) {
+        if (i % 2 === 0) {
+            return ' ';
+        }
+        return '#';
+    } else {
+        if (i % 2 === 0) {
+            return '#';
+        }
+        return ' ';
+    }
+}));
+
+board.forEach(r => {
+    printLine(r);
+})
+
+function printLine(arr) {
+    console.log(arr.join(''));
+}
