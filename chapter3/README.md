@@ -1,0 +1,40 @@
+# Chapter 3
+## Functions
+
+### Bindings and scopes
+- Global: defined outside of any function or block
+- Local: Declared inside a function. Can be referenced only in that function
+
+Bindings declared with let and const are in fact local to the block
+
+### Optional Arguments
+JavaScript is extremely broad-minded about the number of arguments you pass to a function. If you pass too many, the extra ones are ignored. If you pass too few, the missing parameters get assigned the value undefined.
+```
+function minus(a, b) {
+  if (b === undefined) return -a;
+  else return a - b;
+}
+
+console.log(minus(10));
+// → -10
+console.log(minus(10, 5));
+// → 5
+```
+
+Default value for an argument
+```
+function power(base, exponent = 2) {
+  let result = 1;
+  for (let count = 0; count < exponent; count++) {
+    result *= base;
+  }
+  return result;
+}
+
+console.log(power(4));
+// → 16
+console.log(power(2, 6));
+// → 64
+```
+
+### Closure
