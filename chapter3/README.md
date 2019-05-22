@@ -38,7 +38,7 @@ console.log(power(2, 6));
 ```
 
 ### Closure
-<b>#Defined</b>: The ability to treat functions as values
+<b>#Definej</b>: The ability to treat functions as values
 
 ```
 function wrapValue(n) {
