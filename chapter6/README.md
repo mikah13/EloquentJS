@@ -42,3 +42,29 @@ normalize.call({coords: [0, 2, 3], length: 5});
 If we write the argument to map using the function keyword, the code won't work
 
 ### Prototypes
+- Object is the great ancestral prototype behind almost all objects
+```
+console.log(Object.getPrototypeOf({}) ==
+            Object.prototype);
+// → true
+console.log(Object.getPrototypeOf(Object.prototype));
+// → null
+```
+
+- Functions derive from Function.prototype, and arrays derive from Array.prototype
+- We can use Object.create to create an object with a specific prototype.
+  
+```
+let protoRabbit = {
+  speak(line) {
+    console.log(`The ${this.type} rabbit says '${line}'`);
+  }
+};
+let killerRabbit = Object.create(protoRabbit);
+killerRabbit.type = "killer";
+killerRabbit.speak("SKREEEE!");
+// → The killer rabbit says 'SKREEEE!'
+```
+
+### Classes
+

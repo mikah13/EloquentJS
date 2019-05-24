@@ -4,3 +4,4 @@
 ## [Chapter 3](./chapter3)
 ## [Chapter 4](./chapter4)
 ## [Chapter 5](./chapter5)
+## [Chapter 6](./chapter6)
