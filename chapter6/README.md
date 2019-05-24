@@ -129,3 +129,174 @@ console.log(ages.has("toString"));
 
 ### Polymorphism
 <b>Define:</b> Polymorphic code can work with values of different shapes, as long as they support the interface it expects.
+
+```
+Rabbit.prototype.toString = function() {
+  return `a ${this.type} rabbit`;
+};
+
+console.log(String(blackRabbit));
+// → a black rabbit
+```
+
+
+### Symbols
+Property names in an object are strings, but not in all cases. They can also be symbols. Symbols are values created with the Symbol function. Unlike strings, newly created symbols are unique—you cannot create the same symbol twice
+
+```
+let sym = Symbol("name");
+console.log(sym == Symbol("name"));
+// → false
+Rabbit.prototype[sym] = 55;
+console.log(blackRabbit[sym]);
+// → 55
+```
+
+Being both unique and usable as property names makes symbols suitable for defining interfaces that can peacefully live alongside other properties, no matter what their names are.
+
+### The Iterator Interface
+
+Example:
+```
+let okIterator = "OK"[Symbol.iterator]();
+console.log(okIterator.next());
+// → {value: "O", done: false}
+console.log(okIterator.next());
+// → {value: "K", done: false}
+console.log(okIterator.next());
+// → {value: undefined, done: true}
+```
+```
+class Matrix {
+  constructor(width, height, element = (x, y) => undefined) {
+    this.width = width;
+    this.height = height;
+    this.content = [];
+
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        this.content[y * width + x] = element(x, y);
+      }
+    }
+  }
+
+  get(x, y) {
+    return this.content[y * this.width + x];
+  }
+  set(x, y, value) {
+    this.content[y * this.width + x] = value;
+  }
+}
+
+
+class MatrixIterator {
+  constructor(matrix) {
+    this.x = 0;
+    this.y = 0;
+    this.matrix = matrix;
+  }
+
+  next() {
+    if (this.y == this.matrix.height) return {done: true};
+
+    let value = {x: this.x,
+                 y: this.y,
+                 value: this.matrix.get(this.x, this.y)};
+    this.x++;
+    if (this.x == this.matrix.width) {
+      this.x = 0;
+      this.y++;
+    }
+    return {value, done: false};
+  }
+}
+
+
+
+Matrix.prototype[Symbol.iterator] = function() {
+  return new MatrixIterator(this);
+};
+
+
+
+let matrix = new Matrix(2, 2, (x, y) => `value ${x},${y}`);
+for (let {x, y, value} of matrix) {
+  console.log(x, y, value);
+}
+// → 0 0 value 0,0
+// → 1 0 value 1,0
+// → 0 1 value 0,1
+// → 1 1 value 1,1
+
+
+```
+
+### Getters, setters and statics
+```
+let varyingSize = {
+  get size() {
+    return Math.floor(Math.random() * 100);
+  }
+};
+
+console.log(varyingSize.size);
+// → 73
+console.log(varyingSize.size);
+// → 49
+```
+
+
+```
+class Temperature {
+  constructor(celsius) {
+    this.celsius = celsius;
+  }
+  get fahrenheit() {
+    return this.celsius * 1.8 + 32;
+  }
+  set fahrenheit(value) {
+    this.celsius = (value - 32) / 1.8;
+  }
+
+  static fromFahrenheit(value) {
+    return new Temperature((value - 32) / 1.8);
+  }
+}
+
+let temp = new Temperature(22);
+console.log(temp.fahrenheit);
+// → 71.6
+temp.fahrenheit = 86;
+console.log(temp.celsius);
+// → 30
+
+```
+
+methods that have static are stored on the constructor. 
+
+
+### Inheritance
+
+```
+class SymmetricMatrix extends Matrix {
+  constructor(size, element = (x, y) => undefined) {
+    super(size, size, (x, y) => {
+      if (x < y) return element(y, x);
+      else return element(x, y);
+    });
+  }
+
+  set(x, y, value) {
+    super.set(x, y, value);
+    if (x != y) {
+      super.set(y, x, value);
+    }
+  }
+}
+
+let matrix = new SymmetricMatrix(5, (x, y) => `${x},${y}`);
+console.log(matrix.get(2, 3));
+// → 3,2
+
+
+
