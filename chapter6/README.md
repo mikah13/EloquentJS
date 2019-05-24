@@ -68,3 +68,64 @@ killerRabbit.speak("SKREEEE!");
 
 ### Classes
 
+- Make a class with constructor in JS:
+```
+function Rabbit(type) {
+  this.type = type;
+}
+Rabbit.prototype.speak = function(line) {
+  console.log(`The ${this.type} rabbit says '${line}'`);
+};
+
+let weirdRabbit = new Rabbit("weird");
+```
+
+### Class Notation: new JS
+
+```
+class Rabbit {
+  constructor(type) {
+    this.type = type;
+  }
+  speak(line) {
+    console.log(`The ${this.type} rabbit says '${line}'`);
+  }
+}
+
+let killerRabbit = new Rabbit("killer");
+let blackRabbit = new Rabbit("black");
+```
+
+### Overriding dervied properties
+We can override methods/properties in an object
+```
+Rabbit.prototype.teeth = "small";
+console.log(killerRabbit.teeth);
+// → small
+killerRabbit.teeth = "long, sharp, and bloody";
+console.log(killerRabbit.teeth);
+// → long, sharp, and bloody
+console.log(blackRabbit.teeth);
+// → small
+console.log(Rabbit.prototype.teeth);
+// → small
+```
+
+### The Map Class
+```
+let ages = new Map();
+ages.set("Boris", 39);
+ages.set("Liang", 22);
+ages.set("Júlia", 62);
+
+console.log(`Júlia is ${ages.get("Júlia")}`);
+// → Júlia is 62
+console.log("Is Jack's age known?", ages.has("Jack"));
+// → Is Jack's age known? false
+console.log(ages.has("toString"));
+// → false
+```
+
+
+### Polymorphism
+<b>Define:</b> Polymorphic code can work with values of different shapes, as long as they support the interface it expects.
