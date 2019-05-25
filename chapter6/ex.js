@@ -88,9 +88,25 @@ class Group {
             this.array.splice(this.array.indexOf(el), 1);
         }
     }
+}
+class GroupIterator {
+    constructor(group) {
+        this.array = group.array;
+        this.index = 0;
 
+    }
+    next() {
+        if (this.index >= this.array.length) {
+            return { done: true }
+        }
+        return { value: this.array[this.index++], done: false };
+
+    }
 }
 
+Group.prototype[Symbol.iterator] = function() {
+    return new GroupIterator(this);
+}
 let group = Group.from([10, 20]);
 console.log(group.has(10));
 // → true
@@ -100,3 +116,23 @@ group.add(10);
 group.delete(10);
 console.log(group.has(10));
 // → false
+for (let value of Group.from(["a", "b", "c"])) {
+    console.log(value);
+}
+// → a
+// → b
+// → c
+
+let map = { one: true, two: true, hasOwnProperty: true };
+
+map.hasOwnProperty = a => {
+        for (let val in this.map) {
+            if (val === a) {
+                return true;
+            }
+        }
+        return false;
+    }
+    // Fix this call
+console.log(map.hasOwnProperty("three"));
+// → true
